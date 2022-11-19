@@ -42,6 +42,24 @@ Public Sub ButtonOperarUnir_Click()
 
   listafichero = Replace(TextAreaSalidaFicherosSimilares.Text, gb.crlf, " ")
 
-  Shell "cat " & listafichero & " > " & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.TXT"
+  Shell "cat " & listafichero & " > " & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv"
+
+  Wait 2
+
+  Dim comando As String
+  comando = "sed -i 's/    /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  Shell comando
+  Wait 2
+  comando = "sed -i 's/   /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  Shell comando
+  Wait 2
+  comando = "sed -i 's/  /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  Shell comando
+  Wait 2
+  comando = "sed -i 's/ /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  Shell comando
+  Wait 2
+
+  Message.Info("Ok, realizado")
 
 End
