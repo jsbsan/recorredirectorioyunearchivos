@@ -1,0 +1,25 @@
+' Gambas module file
+
+'recorrer directorio y devolver contenido de fichero similar unido
+
+Public Function recorrer(ruta As String, contenido As String[], similar As String) As String
+
+  Dim archivo As String
+
+  For Each archivo In Dir(ruta).Sort()
+
+    If IsDir(ruta & "/" & archivo) Then
+      Print "Directorio: " & ruta & "/" & archivo
+      recorrer(ruta & "/" & archivo, contenido, similar)
+    Else
+      Print "fichero: " & ruta & "/" & archivo
+      If InStr(archivo, similar) <> 0 Then
+        'fichero similar al solicitoado
+        contenido[0] &= ruta & "/" & archivo & gb.CrLf
+      Endif
+
+    Endif
+
+  Next
+
+End

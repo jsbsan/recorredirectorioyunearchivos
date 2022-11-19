@@ -1,0 +1,47 @@
+' Gambas class file
+
+Public ContenidoFichero As New String[]
+
+Public Sub ButtonRutaPorDefecto_Click()
+
+  TextBoxRuta.Text = "/home/minino/MANUAL"
+
+End
+
+Public Sub ButtonOPERARBuscar_Click()
+
+  Dim contenido As String
+
+  If TextBoxRuta.Text = "" Then TextBoxRuta.Text = User.home
+
+  ContenidoFichero.Add("")
+  comun.recorrer(TextBoxRuta.text, ContenidoFichero, ComboBoxFicheroSimilar.Text)
+
+  TextAreaSalidaFicherosSimilares.Text = ContenidoFichero[0]
+
+End
+
+Public Sub Form_Open()
+
+  Dim lineas As New String[]
+
+  lineas = Split(file.Load("directorios.txt"), gb.CrLf)
+  ComboBoxRutas.List = lineas
+
+End
+
+Public Sub ComboBoxRutas_Change()
+
+  TextBoxRuta.Text = ComboBoxRutas.text
+
+End
+
+Public Sub ButtonOperarUnir_Click()
+
+  Dim listafichero As String
+
+  listafichero = Replace(TextAreaSalidaFicherosSimilares.Text, gb.crlf, " ")
+
+  Shell "cat " & listafichero & " > " & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.TXT"
+
+End

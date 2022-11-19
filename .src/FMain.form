@@ -1,0 +1,46 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,139,109)
+  Icon = Picture["icono_unir_ficheros.png"]
+  { TextBoxRuta TextBox
+    MoveScaled(7,6,114,5)
+  }
+  { Label1 Label
+    MoveScaled(4,2,20,3)
+    Text = ("Ruta a Recorrer:")
+  }
+  { Label2 Label
+    MoveScaled(67,63,1,1)
+  }
+  { Label3 Label
+    MoveScaled(3,19,33,3)
+    Text = ("Nombre de fichero \"similar\" a unir:")
+  }
+  { ButtonOPERARBuscar Button
+    MoveScaled(51,23,36,9)
+    Text = ("Buscar")
+  }
+  { ComboBoxFicheroSimilar ComboBox
+    MoveScaled(7,26,36,5)
+    List = [("ID001"), ("ID002"), ("ID011"), ("ID012"), ("ID013")]
+  }
+  { ButtonRutaPorDefecto Button
+    MoveScaled(122,6,13,5)
+    Text = ("por defecto")
+  }
+  { TextAreaSalidaFicherosSimilares TextArea
+    MoveScaled(2,36,130,70)
+  }
+  { Label4 Label
+    MoveScaled(2,32,53,4)
+    Text = ("Resultado: Lista de ficheros que cumplen el criterio:")
+  }
+  { ButtonOperarUnir Button
+    MoveScaled(99,23,37,9)
+    Text = ("Unir")
+  }
+  { ComboBoxRutas ComboBox
+    MoveScaled(7,14,114,4)
+  }
+}
