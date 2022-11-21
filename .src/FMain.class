@@ -1,6 +1,7 @@
 ' Gambas class file
 
 Public ContenidoFichero As New String[]
+Public macroEnEjecucion As Boolean = False
 
 Public Sub ButtonRutaPorDefecto_Click()
 
@@ -13,7 +14,7 @@ Public Sub ButtonOPERARBuscar_Click()
   Dim contenido As String
 
   If TextBoxRuta.Text = "" Then TextBoxRuta.Text = User.home
-
+  ContenidoFichero.Clear()
   ContenidoFichero.Add("")
   comun.recorrer(TextBoxRuta.text, ContenidoFichero, ComboBoxFicheroSimilar.Text)
 
@@ -38,28 +39,72 @@ End
 
 Public Sub ButtonOperarUnir_Click()
 
+  Dim ANNO As String
   Dim listafichero As String
+  Dim SUBRUTAS As String[]
+  Dim NombreFinal As String
+  Dim tiempoespera As Integer = 1
 
   listafichero = Replace(TextAreaSalidaFicherosSimilares.Text, gb.crlf, " ")
 
-  Shell "cat " & listafichero & " > " & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv"
+  SUBRUTAS = Split(TextBoxRuta.text, "/")
 
-  Wait 2
+  ANNO = Replace(SUBRUTAS[SUBRUTAS.COUNT - 1], "ñ", "nn")
+
+  NombreFinal = ComboBoxFicheroSimilar.text & "_" & ANNO & ".UNIDOS.csv"
+
+  Shell "cat " & listafichero & " > " & TextBoxRuta.text & "/" & NombreFinal
+  Print "Proceso sed iniciado....."
+  Wait tiempoespera
 
   Dim comando As String
-  comando = "sed -i 's/    /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  comando = "sed -i 's/    /;/g' \"" & TextBoxRuta.text & "/" & NombreFinal & "\""
   Shell comando
-  Wait 2
-  comando = "sed -i 's/   /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  Wait tiempoespera
+  comando = "sed -i 's/   /;/g' \"" & TextBoxRuta.text & "/" & NombreFinal & "\""
   Shell comando
-  Wait 2
-  comando = "sed -i 's/  /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  Wait tiempoespera
+  comando = "sed -i 's/  /;/g' \"" & TextBoxRuta.text & "/" & NombreFinal & "\""
   Shell comando
-  Wait 2
-  comando = "sed -i 's/ /;/g' \"" & TextBoxRuta.text & "/" & ComboBoxFicheroSimilar.text & ".UNIDOS.csv" & "\""
+  Wait tiempoespera
+  comando = "sed -i 's/ /;/g' \"" & TextBoxRuta.text & "/" & NombreFinal & "\""
   Shell comando
-  Wait 2
+  Wait tiempoespera
+  Print "Proceso sed terminado"
+  If macroEnEjecucion = False Then
+    Message.Info("Ok, realizado")
+  Endif
 
-  Message.Info("Ok, realizado")
+End
+
+Public Sub ButtonMACRO_Click()
+
+  Dim i, j As String
+  'RECORRER TODOS LOS DIRECTORIO Y LOS TIPOS DE FICHERO, CREANDO UNIDO
+
+  macroEnEjecucion = True
+  TextAreaSalidaFicherosSimilares.Text = "" 'vacio listado anterior
+
+  For Each i In ComboBoxRutas.List
+    For Each j In ComboBoxFicheroSimilar.List
+
+      TextBoxRuta.Text = i
+
+      ComboBoxFicheroSimilar.Text = j
+      Wait 0.1
+      'pulso buscarr
+      ButtonOPERARBuscar_Click()
+
+      Wait 1
+      'pulso unir
+      ButtonOperarUnir_Click()
+      Wait 1
+      TextAreaSalidaFicherosSimilares.Text = "" 'vacio listado anterior
+    Next
+
+    Wait 1
+  Next
+
+  Message.info("Macro Realizada")
 
 End
